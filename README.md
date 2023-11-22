@@ -1,13 +1,21 @@
-# Sofie: The Modern TV News Studio Automation System (Ember+ Connection)
+# Sofie Ember+ Connection
 
-A TyepScript implementation of [Lawo's Ember+](https://github.com/Lawo/ember-plus) control protocol for Node.
+This is the _Ember+ Connection_ library of the [**Sofie** TV Automation System](https://github.com/nrkno/Sofie-TV-automation/), a TypeScript implementation of [Lawo's Ember+](https://github.com/Lawo/ember-plus) control protocol for _Node.js_. It has been tested with _Lawo Ruby_, _Lawo R3lay_, and _Lawo MxGUI_.
 
-It has been tested with Lawo Ruby, Lawo R3lay and Lawo MxGUI.
+The current version is very losely based on the original library and Mr. Gilles Dufour's rewrites. It is however rewritten almost completely from scratch and bears little to no resemblance to earlier libraries.
 
-The current version is very losely based on the original library and Mr Gilles Dufour's rewrites. It is however rewritten
-almost completely from scratch and bears little to no resemblance to earlier libraries.
 
-## Example usage
+### Repository-specific Info for Developers
+* [Developer Info](DEVELOPER.md)
+* [Contribution Guidelines](CONTRIBUTING.md)
+
+### General Sofie System Info
+* [Documentation](https://nrkno.github.io/sofie-core/)
+* [Releases](https://nrkno.github.io/sofie-core/releases)
+
+---
+
+## Example Usage
 
 ### Client
 
@@ -74,7 +82,7 @@ client
 	)
 ```
 
-### Setting new value
+### Setting New Value
 
 ```javascript
 client = new EmberClient(LOCALHOST, PORT)
@@ -101,7 +109,7 @@ const req = await client.invoke(fn, 1, 2, 3)
 console.log('result', await req.response)
 ```
 
-### Basic server
+### Basic Server
 
 ```javascript
 const {
@@ -206,3 +214,6 @@ const tree = {
 
 s.init(tree) // initiate the provider with the tree
 ```
+---
+
+_The NRK logo is a registered trademark of Norsk rikskringkasting AS. The license does not grant any right to use, in any way, any trademarks, service marks or logos of Norsk rikskringkasting AS._
