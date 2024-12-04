@@ -130,11 +130,9 @@ export class EmberClient extends EventEmitter<EmberClientEvents> {
 		this._client.on('error', (e) => this.emit('error', e))
 		this._client.on('connected', () => this.emit('connected'))
 		this._client.on('disconnected', () => {
-			this._requests.forEach((req) => {
-				req.reject(new Error('Socket was disconnected'))
-				this._requests.delete(req.reqId)
-			})
-			this.emit('disconnected')
+			// Clanup and Emit disconnected event, and let the client handle that the connection is lost
+			this._requests.clear() // Just clean up the requests
+			this.emit('disconnected') // Notify listeners about the disconnection
 		})
 	}
 
@@ -172,10 +170,9 @@ export class EmberClient extends EventEmitter<EmberClientEvents> {
 		this._client.removeAllListeners()
 		// @ts-expect-error: after using this method, properties are no longer expected to always exist
 		delete this._client
-		this._requests.forEach((req) => {
-			req.reject(new Error('Socket was disconnected'))
-			this._requests.delete(req.reqId)
-		})
+		this._requests.clear() // Just clean up the requests
+		this.emit('disconnected') // Notify listeners about the disconnection
+
 		clearInterval(this._timer)
 	}
 
@@ -722,11 +719,12 @@ export class EmberClient extends EventEmitter<EmberClientEvents> {
 					if (sent) {
 						req.lastSent = Date.now()
 					} else {
-						req.reject(new Error('Request was not sent correctly'))
+						this.emit('error', new Error('Request was not sent correctly'))
 					}
 				}
 				if (sinceFirstSent >= this._timeout) {
-					req.reject(new Error('Request timed out'))
+					// Emit error and remove request
+					this.emit('error', new Error('Request timed out'))
 					this._requests.delete(req.reqId)
 				}
 			})
